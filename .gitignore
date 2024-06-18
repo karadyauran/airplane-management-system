@@ -1,6 +1,6 @@
 env
 .env
-.docker.env
+docker/docker.env
 
 .idea
 .vscode
