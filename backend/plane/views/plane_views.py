@@ -20,9 +20,9 @@ def get_plans(request):
 def create_plane(request):
     data = request.data
     plane = PlaneSerializer(data)
+
     if plane.is_valid():
         plane.create(data)
-
         return Response(plane.data, status=status.HTTP_201_CREATED)
 
     return Response(plane.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -40,5 +40,8 @@ def update_plane(request, pk):
 @api_view(['DELETE'])
 def delete_plane(request, pk):
     plane = get_object_or_404(Plane, pk=pk)
-    plane.delete()
-    return Response(status=status.HTTP_200_OK)
+    if plane.is_valid():
+        plane.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    return Response(plane.errors, status=status.HTTP_400_BAD_REQUEST)
