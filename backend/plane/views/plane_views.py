@@ -10,9 +10,16 @@ from ..serializers.PlaneSerializer import PlaneSerializer
 
 
 @api_view(['GET'])
-def get_plans(request):
+def get_plane(request):
     plane = get_object_or_404(Plane, pk=request.GET.get('pk'))
     serializer = PlaneSerializer(plane)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_all_planes(request):
+    planes = Plane.objects.all()
+    serializer = PlaneSerializer(planes, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
