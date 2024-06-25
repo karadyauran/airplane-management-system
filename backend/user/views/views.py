@@ -1,4 +1,6 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -10,10 +12,10 @@ from ..serializers.UserSerializer import UserSerializer
 
 
 @api_view(['GET'])
-def get_user(request):
-    user = get_object_or_404(User, pk=request.GET.get('pk'))
-    serialized_data = UserSerializer(user)
-    return Response(serialized_data, status=status.HTTP_200_OK)
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def get_user_profile(request):
+    return Response(request.user, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -24,16 +26,20 @@ def get_all_users(request):
 
 
 @api_view(['PUT'])
-def update_user(request, pk):
-    user = get_object_or_404(User, pk=pk)
-    data = request.data
-    user.update(data)
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def update_user(request):
+    user = get_object_or_404(User, pk=request.user.id)
+    data_for_update = request.data
+    user.update(data_for_update)
     return Response(user.data, status=status.HTTP_200_OK)
 
 
 @api_view(['DELETE'])
-def delete_user(request, pk):
-    user = get_object_or_404(User, pk=pk)
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def delete_user(request):
+    user = get_object_or_404(User, pk=request.user.id)
     if user.is_valid():
         user.delete()
         return Response(status=status.HTTP_200_OK)

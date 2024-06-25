@@ -1,4 +1,6 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -35,7 +37,6 @@ def create_plane(request):
     return Response(plane.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-""" Send all data for update """
 @api_view(['PUT'])
 def update_plane(request, pk):
     plane = get_object_or_404(Plane, pk=pk)

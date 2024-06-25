@@ -10,6 +10,8 @@ class User(models.Model):
         MIDDLE_DISPATCHER = 'MD', _('MIDDLE_DISPATCHER')
         SENIOR_DISPATCHER = 'SD', _('SENIOR_DISPATCHER')
 
+        SUPER_DISPATCHER = 'SUD', _('SUPER_DISPATCHER')
+
     auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=120, default=auth_user.name)
     role = models.CharField(max_length=12, choices=Role, default=Role.JUNIOR_DISPATCHER)
