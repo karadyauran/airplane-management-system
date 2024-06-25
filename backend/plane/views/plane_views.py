@@ -35,6 +35,7 @@ def create_plane(request):
     return Response(plane.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+""" Send all data for update """
 @api_view(['PUT'])
 def update_plane(request, pk):
     plane = get_object_or_404(Plane, pk=pk)
